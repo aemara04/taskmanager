@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Anna Mara">
+    <title>To-Do List</title>
+    <meta name="description" content="Simple To-Do List website">
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+    <header>
+        <h1>CS 2300</h1>
+        <h2>To-Do List Activity</h2>
+    </header>
+
+    <form>
+        <label for="tasks">Choose a task:</label>
+        <select name="tasks" id="tasks">
+            <option value="" disabled selected>Select a task</option>
+        </select>
+        <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+        fetch('tasks.txt')
+            .then(response => response.text())
+            .then(data => {
+                const tasks = data.split('\n'); // Split each line
+                const select = document.getElementById('tasks');
+
+                tasks.forEach(task => {
+                    task = task.trim(); // Remove leading/trailing whitespace
+                    if (task !== '') {  // Skip empty lines
+                        const option = document.createElement('option');
+                        option.value = task.replace(/"/g, '&quot;'); // Escape quotes
+                        option.textContent = task;
+                        select.appendChild(option);
+                    }
+                });
+            })
+            .catch(err => console.error('Error loading tasks:', err));
+    </script>
+</body>
+
+</html>
